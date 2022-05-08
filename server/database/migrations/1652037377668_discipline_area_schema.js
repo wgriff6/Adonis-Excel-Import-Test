@@ -7,7 +7,7 @@ class DisciplineAreaSchema extends Schema {
   up () {
     this.create('discipline_areas', (table) => {
       table.increments()
-      table.string('Discpline Area', 254).notNullable().unique()
+      table.string('Discipline_Area', 254).notNullable().unique()
       table.timestamps()
     })
   }

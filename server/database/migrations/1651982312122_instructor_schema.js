@@ -7,8 +7,8 @@ class InstructorSchema extends Schema {
   up () {
     this.create('instructors', (table) => {
       table.increments()
-      table.string('Last Name', 80)
-      table.int('Max Course Load', 40)
+      table.string('Last_Name', 80)
+      table.int('Max_Course_Load', 40)
       table.timestamps()
     })
   }

@@ -7,20 +7,20 @@ class SectionSchema extends Schema {
   up () {
     this.create('sections', (table) => {
       table.increments()
-      table.int('Course Reference Number', 60)
-      table.int('Secton Number', 60)
+      table.int('Course_Reference_Number', 60)
+      table.int('Secton_Number', 60)
 
-      table.int('Meeting Period 1 Days', 60)
-      table.int('Meeting Period 1 Start', 60)
-      table.int('Meeting Period 1 End', 60)
+      table.int('Meeting_Period_1_Days', 60)
+      table.int('Meeting_Period_1_Start', 60)
+      table.int('Meeting_Period_1_End', 60)
 
-      table.int('Meeting Period 2 Days', 60)
-      table.int('Meeting Period 2 Start', 60)
-      table.int('Meeting Period 2 End', 60)
+      table.int('Meeting_Period_2_Days', 60)
+      table.int('Meeting_Period_2_Start', 60)
+      table.int('Meeting_Period_2_End', 60)
 
-      table.int('Meeting Period 3 Days', 60)
-      table.int('Meeting Period 3 Start', 60)
-      table.int('Meeting Period 3 End', 60)
+      table.int('Meeting_Period_3_Days', 60)
+      table.int('Meeting_Period_3_Start', 60)
+      table.int('Meeting_Period_3_End', 60)
 
       table.timestamps()
     })
