@@ -19,3 +19,4 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 
 Route.post('import','ImportController.import')
+Route.post('import/multi','ImportMultiController.importMulti')

@@ -1,11 +1,10 @@
 'use strict'
 
-const ImportService = use('App/Services/ImportService')
+const ImportMultiService = use('App/Services/ImportMultiService')
 const Helpers       = use('Helpers')
 
-class ImportController {
-
-    async import({request, response})
+class ImportMultiController {
+    async importMulti({request, response})
     {
         let upload  = request.file('upload')
         let fname   = `${new Date().getTime()}.${upload.extname}`
@@ -21,9 +20,10 @@ class ImportController {
             return (upload.error(), 'Error moving files', 500)
         }
 
-        let send = await ImportService.ImportClassification('tmp/' + dir + fname)
+        let send = await ImportMultiService.ImportClassification('tmp/' + dir + fname)
         console.log(send)
     }
 }
 
-module.exports = ImportController
+
+module.exports = ImportMultiController
