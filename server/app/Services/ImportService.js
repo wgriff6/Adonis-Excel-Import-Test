@@ -22,9 +22,9 @@ class ImportService {
     let explanation4 = workbook.getWorksheet('Instructors') // get sheet name
 
     let colComment = explanation.getColumn('A') //column name
-    let colComment2 = explanation.getColumn('A') //column name
-    let colComment3 = explanation.getColumn('A') //column name
-    let colComment4 = explanation.getColumn('A') //column name
+    let colComment2 = explanation2.getColumn('A') //column name
+    let colComment3 = explanation3.getColumn('A') //column name
+    let colComment4 = explanation4.getColumn('A') //column name
 
     colComment.eachCell(async (cell, rowNumber) => {
       if (rowNumber >= 2) {
@@ -37,23 +37,22 @@ class ImportService {
 
         let resDiscipline = await DisciplineArea.create(inputDisciplineArea)
 
-        //inputNama.id_sekolah = resSekolah.id
-        //let resNama = await Kepsek.create(inputNama)
         console.log('discipline', resDiscipline.toJSON())
       }
+    })
 
     //checking cells for second sheet  
     colComment2.eachCell(async (cell, rowNumber) => {
         if (rowNumber >= 2) {
           let courseRefNum = explanation2.getCell('A' + rowNumber).value //get cell and the row
-          let departNum = explanation2.getCell('B' + rowNumber).value //get cell and the row
+          let departCode = explanation2.getCell('B' + rowNumber).value //get cell and the row
           let courseNum = explanation2.getCell('C' + rowNumber).value //get cell and the row
           let title = explanation2.getCell('D' + rowNumber).value //get cell and the row
 
           //custom field name in database to variable
           let inputCourses = {
             Course_Reference_Number: courseRefNum,
-            Department_Number: departNum,
+            Department_Code: departCode,
             Course_Number: courseNum,
             Course_Title: title
           }
@@ -64,40 +63,63 @@ class ImportService {
     })
 
     //checking cells for second sheet  
-    // colComment3.eachCell(async (cell, rowNumber) => {
-    //     if (rowNumber >= 2) {
+    colComment3.eachCell(async (cell, rowNumber) => {
+        if (rowNumber >= 2) {
+          let courseRefNum = explanation3.getCell('A' + rowNumber).value //get cell and the row
+          let sectionNum = explanation3.getCell('B' + rowNumber).value //get cell and the row
+          let meetingPeriodDay1 = explanation3.getCell('C' + rowNumber).value //get cell and the row
+          let meetingPeriodStart1 = explanation3.getCell('D' + rowNumber).value //get cell and the row
+          let meetingPeriodEnd1 = explanation3.getCell('E' + rowNumber).value //get cell and the row
 
-    //     }
-    // })
+          let meetingPeriodDay2 = explanation3.getCell('F' + rowNumber).value //get cell and the row
+          let meetingPeriodStart2 = explanation3.getCell('G' + rowNumber).value //get cell and the row
+          let meetingPeriodEnd2 = explanation3.getCell('H' + rowNumber).value //get cell and the row
 
-    // //checking cells for second sheet  
-    // colComment4.eachCell(async (cell, rowNumber) => {
-    //     if (rowNumber >= 2) {
-
-    //     }
-    // })
-           // let inputCourse = {
-        //   nama_kepsek: nama,
-        //   nip: nip,
-        //   id_sekolah: kode
-        // }
-
-        // let inputCourseDiscipline = {
-
-        // }
-
-        // let inputInstructor = {
+          let meetingPeriodDay3 = explanation3.getCell('I' + rowNumber).value //get cell and the row
+          let meetingPeriodStart3 = explanation3.getCell('J' + rowNumber).value //get cell and the row
+          let meetingPeriodEnd3 = explanation3.getCell('K' + rowNumber).value //get cell and the row
+          
+          //custom field name in database to variable
+          let inputSections = {
+            Course_Reference_Number: courseRefNum,
+            Section_Number: sectionNum,
             
-        // }
+            //Meeting_Period_1_Day: meetingPeriodDay1,
+            Meeting_Period_1_Start: meetingPeriodStart1,
+            Meeting_Period_1_End: meetingPeriodEnd1,
 
-        // let inputInstructorDiscipline = {
-            
-        // }
+            //Meeting_Period_2_Day: meetingPeriodDay2,
+            Meeting_Period_2_Start: meetingPeriodStart2,
+            Meeting_Period_2_End: meetingPeriodEnd2,
 
-        // let inputSection = {
-            
-        // }
+            //Meeting_Period_3_Day: meetingPeriodDay3,
+            Meeting_Period_3_Start: meetingPeriodStart3,
+            Meeting_Period_3_End: meetingPeriodEnd3
+          }
+
+          let resSections = await Section.create(inputSections)
+          console.log('sections', resSections.toJSON())
+        }
     })
+
+    //checking cells for second sheet  
+    colComment4.eachCell(async (cell, rowNumber) => {
+        if (rowNumber >= 2) {
+          let name = explanation4.getCell('A' + rowNumber).value //get cell and the row
+          let maxLoad = explanation4.getCell('B' + rowNumber).value //get cell and the row
+
+          //custom field name in database to variable
+          let inputInstructor = {
+            Last_Name: name,
+            Max_Course_Load: maxLoad
+          }
+  
+          let resInstructor = await Instructor.create(inputInstructor)
+  
+          console.log('instructor', resInstructor.toJSON())
+        }
+    })
+       
   }
 }
 

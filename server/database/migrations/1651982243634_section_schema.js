@@ -8,7 +8,7 @@ class SectionSchema extends Schema {
     this.create('sections', (table) => {
       table.increments()
       table.int('Course_Reference_Number', 60)
-      table.int('Secton_Number', 60)
+      table.int('Section_Number', 60)
 
       table.int('Meeting_Period_1_Days', 60)
       table.int('Meeting_Period_1_Start', 60)
