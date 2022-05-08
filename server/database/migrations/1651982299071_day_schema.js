@@ -3,7 +3,7 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 const Database = use('Database')
-
+//lol I done fucked up somewhere in here >_>
 class DaySchema extends Schema {
   up () {
     this.create('days', (table) => {
