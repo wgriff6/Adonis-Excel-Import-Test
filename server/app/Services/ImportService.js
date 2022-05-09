@@ -62,6 +62,18 @@ class ImportService {
         }
     })
 
+
+    //Query days table to map Days to Values
+    const Database = use('Database')
+    const day = await Database
+        .query()
+        .from('days')
+        .select('Day', 'Value')
+    const dayMap = {}    
+    for (let i=0; i < day.length; i++){
+        dayMap[day[i].Day] = day[i].Value
+    }
+
     //checking cells for second sheet  
     colComment3.eachCell(async (cell, rowNumber) => {
         if (rowNumber >= 2) {
@@ -79,20 +91,41 @@ class ImportService {
           let meetingPeriodStart3 = explanation3.getCell('J' + rowNumber).value //get cell and the row
           let meetingPeriodEnd3 = explanation3.getCell('K' + rowNumber).value //get cell and the row
           
+          //Loop to parse days column and add summation of values for later identification
+          const dayArray = meetingPeriodDay1.split(',')
+          // const dayArray2 = meetingPeriodDay2.split(',')
+          // const dayArray3 = meetingPeriodDay3.split(',')
+            let daySum = 0
+            for (let i=0; i < dayArray.length; i++) {
+              console.log("Entered the Loop")
+              let parsedDays = dayArray[i].trim() //trim() trims excess whitespace
+              console.log('This is parsedDays: ' + parsedDays)
+              let dayValue = dayMap[parsedDays]
+              console.log("The dayValue: " + dayValue)
+              daySum += dayValue
+              console.log("This is the daySum: " + daySum)
+            
+            }
+            // let inputDayValues = {
+            //   Meeting_Period_1_Days: daySum
+            // }
+            // let resDays = await Section.create(inputDayValues)
+            // console.log('Sum of Day Values', resDays.toJSON()) 
+
           //custom field name in database to variable
           let inputSections = {
             Course_Reference_Number: courseRefNum,
             Section_Number: sectionNum,
             
-            //Meeting_Period_1_Day: meetingPeriodDay1,
+            Meeting_Period_1_Days: daySum,
             Meeting_Period_1_Start: meetingPeriodStart1,
             Meeting_Period_1_End: meetingPeriodEnd1,
 
-            //Meeting_Period_2_Day: meetingPeriodDay2,
+            Meeting_Period_2_Days: dayMap[meetingPeriodDay2],
             Meeting_Period_2_Start: meetingPeriodStart2,
             Meeting_Period_2_End: meetingPeriodEnd2,
 
-            //Meeting_Period_3_Day: meetingPeriodDay3,
+            Meeting_Period_3_Days: dayMap[meetingPeriodDay3],
             Meeting_Period_3_Start: meetingPeriodStart3,
             Meeting_Period_3_End: meetingPeriodEnd3
           }

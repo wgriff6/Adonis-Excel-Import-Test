@@ -61,10 +61,7 @@ class ImportMultiService {
           } 
         }
     })
-    colComment3.eachCell(async (cell, rowNumber) => {
 
-    })
-    
     //Query instructors table to map Last_Names to id numbers
     const instructors = await Database
         .query()
