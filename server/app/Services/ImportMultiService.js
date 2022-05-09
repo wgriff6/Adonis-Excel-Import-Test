@@ -43,20 +43,11 @@ class ImportMultiService {
           let courseRefNum = explanation2.getCell('A' + rowNumber).value //get cell and the row
           let areaString = explanation2.getCell('E' + rowNumber).value //get cell and the row
 
-        //    let inputCourseRefNum = {
-        //      Course_Reference_Number: courseRefNum,
-        //    }
-
-        //    let resRefNum = await CourseDiscipline.create(inputCourseRefNum)
-        //    console.log('course-ref-num', resRefNum.toJSON())
-
         //Parsing the Discipline Area column for each component
          const areaArray = areaString.split(',')
-        //console.log(mapping)
+
           for (let i=0; i < areaArray.length; i++) {
-            console.log('in for loop')
             let discipline = areaArray[i].trim() //trim() trims excess whitespace
-            console.log('"' + discipline + '"')
             const discipline_id = mapping[discipline]
            console.log(discipline_id)
     
@@ -64,16 +55,52 @@ class ImportMultiService {
                 Course_Reference_Number: courseRefNum,
                 Discipline_ID: discipline_id
             }
-            console.log('creating')
             let resCourseDiscipline = await CourseDiscipline.create(inputDisciplines)
-            console.log('created')
 
             console.log('course-discipline', resCourseDiscipline.toJSON())
           } 
-          
-          
         }
-    })       
+    })
+    colComment3.eachCell(async (cell, rowNumber) => {
+
+    })
+    
+    //Query instructors table to map Last_Names to id numbers
+    const instructors = await Database
+        .query()
+        .from('instructors')
+        .select('Last_Name', 'id')
+    const mapInstruct = {}    
+    for (let i=0; i < instructors.length; i++){
+        mapInstruct[instructors[i].Last_Name] = instructors[i].id
+    }
+
+    colComment4.eachCell(async (cell, rowNumber) => {
+        if (rowNumber >= 2) {
+            let name = explanation4.getCell('A' + rowNumber).value //get cell and the row
+            let areaInstruct = explanation4.getCell('C' + rowNumber).value //get cell and the row
+  
+          //Parsing the Discipline Area column for each component
+           const areaArray = areaInstruct.split(',')
+
+  
+            for (let i=0; i < areaArray.length; i++) {
+              let discipline = areaArray[i].trim() //trim() trims excess whitespace
+              const discipline_id = mapping[discipline]
+              console.log(discipline_id)
+              const instructor_id = mapInstruct[name]
+            console.log('Instructor ID: ' + instructor_id)
+
+              let inputInstructorDisciplines = {
+                  Instructor_ID: instructor_id,
+                  Discipline_ID: discipline_id
+              }
+              let resInstructorDiscipline = await InstructorDiscipline.create(inputInstructorDisciplines)
+  
+              console.log('instructor-discipline', resInstructorDiscipline.toJSON())
+            } 
+          }
+    }) 
   }
 }
 
