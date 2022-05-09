@@ -32,7 +32,7 @@ class ImportService {
 
         //custom field name in database to variable
         let inputDisciplineArea = {
-          Discipline_Area: disciplineName,
+          Discipline_Area: disciplineName.trim(),
         }
 
         let resDiscipline = await DisciplineArea.create(inputDisciplineArea)

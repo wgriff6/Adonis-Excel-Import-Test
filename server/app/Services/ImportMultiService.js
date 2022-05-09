@@ -26,6 +26,16 @@ class ImportMultiService {
     let colComment3 = explanation3.getColumn('A') //column name
     let colComment4 = explanation4.getColumn('A') //column name
 
+    //Query discipline_areas table to map disciplines
+    const Database = use('Database')
+    const disciplines = await Database
+        .query()
+        .from('discipline_areas')
+        .select('Discipline_Area', 'id')
+    const mapping = {}    
+    for (let i=0; i < disciplines.length; i++){
+        mapping[disciplines[i].Discipline_Area] = disciplines[i].id
+    }
 
     //checking cells for second sheet  
     colComment2.eachCell(async (cell, rowNumber) => {
@@ -33,17 +43,35 @@ class ImportMultiService {
           let courseRefNum = explanation2.getCell('A' + rowNumber).value //get cell and the row
           let areaString = explanation2.getCell('E' + rowNumber).value //get cell and the row
 
-          let inputCourseRefNum = {
-            Course_Reference_Number: courseRefNum,
-          }
+        //    let inputCourseRefNum = {
+        //      Course_Reference_Number: courseRefNum,
+        //    }
 
-          areaString.split(',')
-          let inputDisciplines = {
-            Table_Tile: areaString,
-          }
+        //    let resRefNum = await CourseDiscipline.create(inputCourseRefNum)
+        //    console.log('course-ref-num', resRefNum.toJSON())
+
+        //Parsing the Discipline Area column for each component
+         const areaArray = areaString.split(',')
+        //console.log(mapping)
+          for (let i=0; i < areaArray.length; i++) {
+            console.log('in for loop')
+            let discipline = areaArray[i].trim() //trim() trims excess whitespace
+            console.log('"' + discipline + '"')
+            const discipline_id = mapping[discipline]
+           console.log(discipline_id)
+    
+            let inputDisciplines = {
+                Course_Reference_Number: courseRefNum,
+                Discipline_ID: discipline_id
+            }
+            console.log('creating')
+            let resCourseDiscipline = await CourseDiscipline.create(inputDisciplines)
+            console.log('created')
+
+            console.log('course-discipline', resCourseDiscipline.toJSON())
+          } 
           
-          let resCourseDiscipline = await CourseDiscipline.create(inputCourseRefNum)
-          console.log('course-ref-num', resCourseRefNum.toJSON())
+          
         }
     })       
   }
